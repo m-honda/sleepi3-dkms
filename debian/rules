@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+
+include /usr/share/dpkg/pkg-info.mk
+
+DKMS_VERSION = $(shell echo ${DEB_VERSION_UPSTREAM} | grep -o -E "[0-9]+(\.[0-9]+)*" | head -n1)
+
+%:
+	dh $@
+
+override_dh_install:
+	dh_install Makefile dkms.conf rtc-ds1307-legacy.c usr/src/sleepi3-$(DKMS_VERSION)/
+
+override_dh_auto_configure override_dh_auto_build override_dh_auto_test override_dh_auto_install:
+# do nothing
+
